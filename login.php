@@ -1,8 +1,12 @@
-﻿<?php
+<?php
 session_start();
 include 'config/database.php';
 
-// Handle Logout
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    header("Location: admin/dashboard.php");
+    exit;
+}
+
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.php");
@@ -14,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    // Direct credentials check for testing
     if ($username === 'admin' && $password === 'adminpassword') {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
